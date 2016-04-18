@@ -80,56 +80,56 @@ end program rmc
 
 
 ! Example output:
-! Core           1 has color           0
-! Core           3 has color           0
-! Core           7 has color           1
+! Core           5 has color           1
 ! Core           8 has color           1
 ! Core           9 has color           1
-! Core          10 has color           1
+! Core          11 has color           1
 ! Core          12 has color           1
 ! Core          13 has color           1
 ! Core          14 has color           1
-! Core           2 has color           0
-! Core           4 has color           1
-! Core          11 has color           1
-! Core           5 has color           1
 ! Core          15 has color           1
+! Core           0 has color           0
+! Core           1 has color           0
+! Core           2 has color           0
+! Core           3 has color           0
+! Core           4 has color           1
 ! Core           6 has color           1
-! I am core  4 of 12 with color 1, root 0, and colored_comm 3
-! I am core  5 of 12 with color 1, root 0, and colored_comm 3
-! I am core  0 of 12 with color 1, root 0, and colored_comm 3
-!  world           1 got the following ranks from the whole world:           4
+! Core           7 has color           1
+! Core          10 has color           1
+! I am core  6 of 12 with color 1, root 0, and communicator 3
+! I am core 11 of 12 with color 1, root 0, and communicator 3
+! I am core  0 of  4 with color 0, root 0, and communicator 3
+! World           0 got the following ranks from the whole world:           0
+!            1           2           3
+! I am core  0 and I got 5 broadcasted to me from my root.
+! I am core  1 of  4 with color 0, root 0, and communicator 3
+! I am core  1 and I got 5 broadcasted to me from my root.
+! I am core  2 of  4 with color 0, root 0, and communicator 3
+! I am core  2 and I got 5 broadcasted to me from my root.
+! I am core  3 of  4 with color 0, root 0, and communicator 3
+! I am core  3 and I got 5 broadcasted to me from my root.
+! I am core  0 of 12 with color 1, root 0, and communicator 3
+! World           1 got the following ranks from the whole world:           4
 !            5           6           7           8           9          10
 !           11          12          13          14          15
-! I am core  6 of 12 with color 1, root 0, and colored_comm 3
-! I am core  8 of 12 with color 1, root 0, and colored_comm 3
-! I am core  9 of 12 with color 1, root 0, and colored_comm 3
-! I am core  1 of 12 with color 1, root 0, and colored_comm 3
-! I am core  2 of 12 with color 1, root 0, and colored_comm 3
-!  Core           0 has color           0
-! I am core  0 of  4 with color 0, root 0, and colored_comm 3
-!  world           0 got the following ranks from the whole world:           0
-!            1           2           3
-! I am core  0 and I got  5 broadcasted to me from my root.
-! I am core 10 of 12 with color 1, root 0, and colored_comm 3
-! I am core  1 of  4 with color 0, root 0, and colored_comm 3
-! I am core  1 and I got  5 broadcasted to me from my root.
-! I am core  2 of  4 with color 0, root 0, and colored_comm 3
-! I am core  2 and I got  5 broadcasted to me from my root.
-! I am core  7 of 12 with color 1, root 0, and colored_comm 3
-! I am core 11 of 12 with color 1, root 0, and colored_comm 3
-! I am core  3 of  4 with color 0, root 0, and colored_comm 3
-! I am core  3 and I got  5 broadcasted to me from my root.
-! I am core  3 of 12 with color 1, root 0, and colored_comm 3
-! I am core  1 and I got  5 broadcasted to me from my root.
-! I am core  4 and I got  5 broadcasted to me from my root.
-! I am core  5 and I got  5 broadcasted to me from my root.
-! I am core  0 and I got  5 broadcasted to me from my root.
-! I am core  8 and I got  5 broadcasted to me from my root.
-! I am core  9 and I got  5 broadcasted to me from my root.
-! I am core  3 and I got  5 broadcasted to me from my root.
-! I am core  2 and I got  5 broadcasted to me from my root.
-! I am core 10 and I got  5 broadcasted to me from my root.
-! I am core  7 and I got  5 broadcasted to me from my root.
-! I am core 11 and I got  5 broadcasted to me from my root.
-! I am core  6 and I got  5 broadcasted to me from my root.
+! I am core  0 and I got 5 broadcasted to me from my root.
+! I am core  2 of 12 with color 1, root 0, and communicator 3
+! I am core  2 and I got 5 broadcasted to me from my root.
+! I am core  1 of 12 with color 1, root 0, and communicator 3
+! I am core  1 and I got 5 broadcasted to me from my root.
+! I am core  4 of 12 with color 1, root 0, and communicator 3
+! I am core  4 and I got 5 broadcasted to me from my root.
+! I am core  3 of 12 with color 1, root 0, and communicator 3
+! I am core  3 and I got 5 broadcasted to me from my root.
+! I am core  5 of 12 with color 1, root 0, and communicator 3
+! I am core  5 and I got 5 broadcasted to me from my root.
+! I am core  7 of 12 with color 1, root 0, and communicator 3
+! I am core  7 and I got 5 broadcasted to me from my root.
+! I am core  8 of 12 with color 1, root 0, and communicator 3
+! I am core  8 and I got 5 broadcasted to me from my root.
+! I am core  9 of 12 with color 1, root 0, and communicator 3
+! I am core  9 and I got 5 broadcasted to me from my root.
+! I am core 10 of 12 with color 1, root 0, and communicator 3
+! I am core 10 and I got 5 broadcasted to me from my root.
+! I am core 11 and I got 5 broadcasted to me from my root.
+! I am core  6 and I got 5 broadcasted to me from my root.

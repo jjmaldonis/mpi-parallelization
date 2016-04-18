@@ -18,7 +18,7 @@ program rmc
     integer :: world_rank, rank
     integer :: world_nprocs, nprocs
     integer :: root
-    integer, dimension(:), allocatable :: world_ranks, ranks, world_colors, colors
+    integer, dimension(:), allocatable :: world_ranks, ranks, world_colors, colors, temp
     integer :: to_send
 
  
@@ -33,7 +33,7 @@ program rmc
     ! Initialize MPI
     call mpi_init_thread(MPI_THREAD_MULTIPLE, ipvd, mpierr)
     call mpi_comm_rank(mpi_comm_world, world_rank, mpierr)
-    call mpi_comm_size(colored_comm, world_nprocs, mpierr)
+    call mpi_comm_size(mpi_comm_world, world_nprocs, mpierr)
     write(*,*) "Core", world_rank, "has color", color
 
     ! Split the world communicator into separate pieces for each mpiexec subprogram
@@ -48,7 +48,7 @@ program rmc
     root = 0
 
     call mpi_barrier(colored_comm, mpierr)
-    write(*,'(A10, I2, A4, I2, A11, I2, A6, I2, A18, I2)') "I am core ", rank, " of ", nprocs, " with color", color, ", root", root, ", and colored_comm", colored_comm
+    write(*,'(A10, I2, A4, I2, A11, I2, A6, I2, A18, I2)') "I am core ", rank, " of ", nprocs, " with color", color, ", root", root, ", and communicator", colored_comm
 
     ! Allocate space for a few variables that are going to be used for gathering and printing
     allocate(world_ranks(nprocs), stat=stat)
@@ -56,11 +56,10 @@ program rmc
 
     ! Gather each 'rank' into 'world_ranks' on processor 'root' through each 'colored_comm'
     call mpi_gather(world_rank, 1, MPI_INT, world_ranks, 1, MPI_INT, root, colored_comm, mpierr)
-    allocate(ranks(nprocs), stat=stat) ! There is some really weird bug going on here. The entire program fails if I don't do this allocation. I need to experiment more.
 
     call mpi_barrier(colored_comm, mpierr)
     if(rank .eq. root) then
-        write(*,*) "world", color, "got the following ranks from the whole world:", world_ranks
+        write(*,*) "World", color, "got the following ranks from the whole world:", world_ranks
     endif
 
     ! Now try a bcast
@@ -69,7 +68,7 @@ program rmc
     endif
     call mpi_barrier(colored_comm, mpierr)
     call mpi_bcast(to_send, 1, MPI_INT, root, colored_comm, mpierr)
-    write(*,'(A10, I2, A11, I2, A32)') "I am core ", rank, " and I got ", to_send, " broadcasted to me from my root."
+    write(*,'(A10, I2, A10, I2, A32)') "I am core ", rank, " and I got", to_send, " broadcasted to me from my root."
 
     ! Free the sub-communicators and finalize
     call mpi_comm_free(colored_comm, mpierr)

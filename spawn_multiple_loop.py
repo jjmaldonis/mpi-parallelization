@@ -28,9 +28,10 @@ def main(split_into=2, nloops=3):
 
     if rank == 0:
         print("At each iteration we will spawn {} workers with {} cores each out of a total of {} cores.".format(split_into, cores_per_comm, size))
-        print("Those {} workers will get the following as input:".format(split_into))
+        print("Those {} split communicators will get the following as input:".format(split_into))
         for i in range(split_into):
-            print("    Worker {}: {}".format(i, data_by_process[i]))
+            print("    Communicator {}: {}".format(i, data_by_process[i]))
+
         for i in range(nloops):
             spawn_multiple(split_into, cores_per_comm, data_by_process)
 

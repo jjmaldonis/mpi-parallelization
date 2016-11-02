@@ -27,9 +27,9 @@ def main(split_into=2):
 
     if rank == 0:
         print("We will spawn {} workers with {} cores each out of a total of {} cores.".format(split_into, cores_per_comm, size))
-        print("Those {} workers will get the following as input:".format(split_into))
+        print("Those {} split communicators will get the following as input:".format(split_into))
         for i in range(split_into):
-            print("    Worker {}: {}".format(i, data_by_process[i]))
+            print("    Communicator {}: {}".format(i, data_by_process[i]))
         spawn_multiple(split_into, cores_per_comm, data_by_process)
 
 
@@ -48,7 +48,7 @@ def spawn_multiple(split_into, cores_per_comm, args):
     results = {color: data for color, data in results}  # Remove duplicate color info
     results = [data for _, data in sorted(results.items())]  # Recast to a list with just the data, sorted by color
         
-    print("After parcing the results by color, the parent got the following info:  {}".format(results))
+    print("After parcing the results by color, the parent gathered the following data:  {}".format(results))
 
     intercomm.Disconnect()
     print("Successfully disconnected parent.")

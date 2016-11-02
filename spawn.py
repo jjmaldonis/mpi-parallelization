@@ -37,7 +37,7 @@ def spawn(args, size):
     results = intercomm.gather(None, root=MPI.ROOT)
     results = {color: data for color, data in results}  # Remove duplicate color info
     results = [data for _, data in sorted(results.items())]  # Recast to a list with just the data, sorted by color
-    print("After parcing the results by color, the parent got the following info:  {}".format(results))
+    print("After parcing the results by color, the parent gathered the following data:  {}".format(results))
 
     intercomm.Disconnect()
     print("Successfully disconnected parent.")

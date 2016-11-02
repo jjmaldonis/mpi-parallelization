@@ -32,7 +32,7 @@ def spawn(args, size):
     # First use a barrier to interact with parent.barrier() in worker_multiple.py
     intercomm.barrier()
 
-    # Then use a reduce to show how to pass information back and forth
+    # Then use a gather to show how to pass information back and forth
     intercomm.barrier()
     results = intercomm.gather(None, root=MPI.ROOT)
     results = {color: data for color, data in results}  # Remove duplicate color info

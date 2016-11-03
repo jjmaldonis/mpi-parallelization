@@ -6,6 +6,8 @@ from mpi4py import MPI
 def check_mpi():
     mpiexec_path, _ = os.path.split(distutils.spawn.find_executable("mpiexec"))
     for executable, path in mpi4py.get_config().items():
+        if executable not in ['mpicc', 'mpicxx', 'mpif77', 'mpif90', 'mpifort']:
+            continue
         if mpiexec_path not in path:
             raise ImportError("mpi4py may not be configured against the same version of 'mpiexec' that you are using. The 'mpiexec' path is {mpiexec_path} and mpi4py.get_config() returns:\n{mpi4py_config}\n".format(mpiexec_path=mpiexec_path, mpi4py_config=mpi4py.get_config()))
     if 'Open MPI' not in MPI.get_vendor():

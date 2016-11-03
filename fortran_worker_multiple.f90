@@ -2,6 +2,7 @@
 !    mpif90 -O2 -openmp -fpp fortran_worker_multiple.f90 -o fortran_worker_multiple
 ! This program is not designed to be a stand-alone process and will crash if it
 ! is not run as a child process.
+! See worker_multiple.py for an analogous program written in python.
 
 
 elemental subroutine str2int(str, int, stat)

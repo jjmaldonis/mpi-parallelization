@@ -1,3 +1,8 @@
+"""
+A worker/child program that calculates PI, multiplies it by the first argument to this program, and returns the value to the parent.
+It should not be run as a stand-alone program.
+"""
+
 from mpi4py import MPI
 import numpy
 import sys, os

@@ -1,3 +1,11 @@
+"""
+This example creates data contained in a list.
+The length of the list is equal to the number of cores mpi4py is using.
+Each core gets assigned one piece of data in that list and modifies it.
+The updated data is passed to the root via gather, where it is then
+broadcast to all the other cores.
+"""
+
 import sys
 from mpi4py import MPI
 from random import shuffle

@@ -1,3 +1,7 @@
+"""
+Similar to the gather example, but this uses allgather and parses the results
+to reflect the original list structure and discards the old data.
+"""
 import sys
 from mpi4py import MPI
 from random import shuffle

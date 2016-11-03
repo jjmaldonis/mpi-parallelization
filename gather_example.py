@@ -11,7 +11,7 @@ data = [i*10 for i in range(size)]
 shuffle(data)
 data = comm.bcast(data)
 
-print("Starting data for rank {}:\n{}".format(rank, data))
+print("Starting data for rank {}:        {}".format(rank, data))
 
 
 # Assign a piece of data to each core
@@ -23,6 +23,6 @@ data[positions_per_core[rank]] += 1
 # Allgather all the data
 data = comm.gather(data[positions_per_core[rank]])
 
-print("Ending data for rank {} (this is only correct on the root):\n{}".format(rank, data))
-#if rank == root:
-#    print("Ending data, one for each core (this is only correct on the root):\n{}".format(data))
+print("Ending data for rank {}:          {}  (this is only correct on the root)".format(rank, data))
+data = comm.bcast(data)
+print("After broadcasting, rank {} has:  {}".format(rank, data))

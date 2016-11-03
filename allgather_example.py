@@ -11,7 +11,7 @@ data = [i*10 for i in range(size)]
 shuffle(data)
 data = comm.bcast(data)
 
-print("Starting data for rank {}:\n{}".format(rank, data))
+print("Starting data for rank {}:  {}".format(rank, data))
 
 
 # Assign a piece of data to each core
@@ -26,4 +26,4 @@ all_data = comm.allgather(data)
 # Create a single updated piece of data based on the updates that each core performed
 data = [all_data[i][positions_per_core[i]] for i in range(size)]
 
-print("Ending data for rank {}:\n{}".format(rank, data))
+print("Ending data for rank {}:    {}".format(rank, data))

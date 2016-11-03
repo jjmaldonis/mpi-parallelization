@@ -11,9 +11,11 @@ import sys
 import time
 
 from spawn import spawn
+from check_mpi import check_mpi
 
 
 def main(split_into=2, nloops=3):
+    check_mpi()
     world = MPI.COMM_WORLD
     rank = world.Get_rank()
     size = world.Get_size()
@@ -22,9 +24,15 @@ def main(split_into=2, nloops=3):
 
     if rank == 0:
         for i in range(nloops):
+            print("Iteration {}...".format(i))
             args = [str(i+1)]
             spawn(args, size)
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--split_into', default=2, type=int)
+    parser.add_argument('-n', '--nloops', default=3, type=int)
+    args = parser.parse_args()
+    main(split_into=args.split_into, nloops=args.nloops)
 

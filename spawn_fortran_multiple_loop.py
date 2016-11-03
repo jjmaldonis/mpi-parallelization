@@ -12,9 +12,11 @@ import sys
 import time
 
 from spawn_fortran_multiple import spawn_fortran_multiple
+from check_mpi import check_mpi
 
 
 def main(split_into=2, nloops=3):
+    check_mpi()
     world = MPI.COMM_WORLD
     rank = world.Get_rank()
     size = world.Get_size()
@@ -33,6 +35,7 @@ def main(split_into=2, nloops=3):
             print("    Communicator {}: {}".format(i, data_by_process[i]))
 
         for i in range(nloops):
+            print("Iteration {}...".format(i))
             spawn_fortran_multiple(split_into, cores_per_comm, data_by_process)
 
 if __name__ == "__main__":

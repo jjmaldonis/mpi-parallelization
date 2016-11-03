@@ -12,9 +12,11 @@ import sys
 import time
 
 from spawn_multiple import spawn_multiple
+from check_mpi import check_mpi
 
 
 def main(split_into=2, nloops=3):
+    check_mpi()
     world = MPI.COMM_WORLD
     rank = world.Get_rank()
     size = world.Get_size()
@@ -33,8 +35,14 @@ def main(split_into=2, nloops=3):
             print("    Communicator {}: {}".format(i, data_by_process[i]))
 
         for i in range(nloops):
+            print("Iteration {}...".format(i))
             spawn_multiple(split_into, cores_per_comm, data_by_process)
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--split_into', default=2, type=int)
+    parser.add_argument('-n', '--nloops', default=3, type=int)
+    args = parser.parse_args()
+    main(split_into=args.split_into, nloops=args.nloops)
 

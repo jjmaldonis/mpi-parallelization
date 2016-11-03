@@ -3,7 +3,6 @@ A master-worker example similar to spawn.py and https://mpi4py.scipy.org/docs/us
 This example uses `Spawn_multiple` rather than `Spawn` to create multiple copies of the same executable.
 Each executable is given different data, so the values sent back to the master process are different.
 
-
 Run with:
     mpiexec -np 4  -oversubscribe  -mca btl tcp,sm,self  python spawn_multiple.py
 """

@@ -1,7 +1,6 @@
 """
 Calls the spawn_fortran_multiple command in spawn_fortran_multiple.py in a loop.
 
-
 Run with:
     mpiexec -np 4  -oversubscribe  -mca btl tcp,sm,self  python spawn_multiple_loop.py
 """
@@ -36,7 +35,7 @@ def main(split_into=2, nloops=3):
 
         for i in range(nloops):
             print("Iteration {}...".format(i))
-            spawn_fortran_multiple(split_into, cores_per_comm, data_by_process)
+            spawn_fortran_multiple(size, split_into, cores_per_comm, data_by_process)
 
 if __name__ == "__main__":
     import argparse

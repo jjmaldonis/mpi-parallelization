@@ -1,7 +1,6 @@
 """
 Calls the spawn_multiple command in spawn_multiple.py in a loop.
 
-
 Run with:
     mpiexec -np 4  -oversubscribe  -mca btl tcp,sm,self  python spawn_multiple_loop.py
 """

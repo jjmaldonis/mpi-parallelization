@@ -1,7 +1,6 @@
 """
-A master-worker example that spawns an worker process of the same size as the master process.
+A master-worker example that spawns a worker process of the same size as the master process.
 The worker process calcuates PI and the master prints out the result.
-
 
 Run with:
     mpiexec -np 4  -oversubscribe  -mca btl tcp,sm,self  python spawn.py

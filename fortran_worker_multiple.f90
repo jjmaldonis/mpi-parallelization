@@ -30,8 +30,6 @@ program split_worker
     ! Read in this special environemnt variable set by OpenMPI
     ! Context:  http://stackoverflow.com/questions/35924226/openmpi-mpmd-get-communication-size
     ! (See the solution by Hristo Iliev)
-    ! The below two lines set `color` to be 0, 1, ..., P where P is the number
-    ! of executables given on the command line within `mpiexec` that are colon-deliminated
     call get_environment_variable("OMPI_MCA_orte_app_num", color_str)
     call str2int(color_str, color, stat)
 
@@ -40,9 +38,10 @@ program split_worker
     call mpi_comm_rank(mpi_comm_world, world_rank, mpierr)
     call mpi_comm_size(mpi_comm_world, world_nprocs, mpierr)
 
+    ! Get the parent communicator
     call mpi_comm_get_parent(parent_comm, mpierr)
 
-    ! Split the world communicator into separate pieces for each mpiexec subprogram
+    ! Split the world communicator into separate pieces for each subprogram
     call mpi_barrier(mpi_comm_world, mpierr)
     call mpi_comm_split(mpi_comm_world, color, world_rank, colored_comm, mpierr)
 
@@ -56,13 +55,13 @@ program split_worker
     call get_command_argument(1, argv1, length, stat)
     call str2int(argv1, multiplier, stat)
 
-    !write(*,'(A10, I2, A4, I2, A11, I2, A6, I2, A18, I2)') "I am core ", colored_rank, " of ", nprocs, " with color", color, ", root", root, ", and communicator", colored_comm
-    
+    ! All the communicators work. Here is a demonstration using barriers.
     call mpi_barrier(parent_comm, mpierr)
     call mpi_barrier(mpi_comm_world, mpierr)
     call mpi_barrier(colored_comm, mpierr)
 
 
+    ! See worker_multiple.py for details about this calculation
     fraction = 1.0 / 2**(1+colored_rank)
     partial_pi = fraction * 3.14159
     call mpi_reduce(pi, pi_out, 1, MPI_DOUBLE, MPI_SUM, 0, colored_comm, mpierr)

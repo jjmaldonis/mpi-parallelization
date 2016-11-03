@@ -15,6 +15,19 @@ import time
 
 
 def main(split_into=2):
+    import os
+    import distutils.spawn
+    import mpi4py
+    mpiexec_path, _ = os.path.split(distutils.spawn.find_executable("mpiexec"))
+    for executable, path in mpi4py.get_config().items():
+        if mpiexec_path not in path:
+            raise ImportError("mpi4py may not be configured against the same version of 'mpiexec' that you are using. The 'mpiexec' path is {mpiexec_path} and mpi4py.get_config() returns:\n{mpi4py_config}\n".format(mpiexec_path=mpiexec_path, mpi4py_config=mpi4py.get_config()))
+    if 'Open MPI' not in MPI.get_vendor():
+        raise ImportError("mpi4py must have been installed against Open MPI in order for StructOpt to function correctly.")
+    vendor_number = ".".join([str(x) for x in MPI.get_vendor()[1]])
+    if vendor_number not in mpiexec_path:
+        raise ImportError("The MPI version that mpi4py was compiled against does not match the version of 'mpiexec'. mpi4py's version number is {}, and mpiexec's path is {}".format(MPI.get_vendor(), mpiexec_path))
+
     world = MPI.COMM_WORLD
     rank = world.Get_rank()
     size = world.Get_size()
@@ -30,13 +43,13 @@ def main(split_into=2):
         print("Those {} split communicators will get the following as input:".format(split_into))
         for i in range(split_into):
             print("    Communicator {}: {}".format(i, data_by_process[i]))
-        spawn_multiple(split_into, cores_per_comm, data_by_process)
+        spawn_fortran_multiple(split_into, cores_per_comm, data_by_process)
 
 
-def spawn_multiple(split_into, cores_per_comm, args):
+def spawn_fortran_multiple(split_into, cores_per_comm, args):
     print("Trying to spawn...")
-    args = [["worker_multiple.py", data] for data in args]
-    intercomm = MPI.COMM_SELF.Spawn_multiple([sys.executable]*split_into, args=args, maxprocs=[cores_per_comm]*split_into)
+    args = [[data] for data in args]
+    intercomm = MPI.COMM_SELF.Spawn_multiple(['fortran_worker_multiple']*split_into, args=args, maxprocs=[cores_per_comm]*split_into)
     print("Spawn successful!")
 
     # Use a barrier to interact with parent.barrier() in worker_multiple.py for demonstration
@@ -44,7 +57,8 @@ def spawn_multiple(split_into, cores_per_comm, args):
 
     # Then use a gather to show how to pass information back and forth
     intercomm.barrier()
-    results = intercomm.gather(None, root=MPI.ROOT)
+    results = numpy.array([[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]], 'float64')
+    intercomm.Gather(numpy.array([0.0, 0.0], 'float64'), results, root=MPI.ROOT)
     results = {color: data for color, data in results}  # Remove duplicate color info
     results = [data for _, data in sorted(results.items())]  # Recast to a list with just the data, sorted by color
         

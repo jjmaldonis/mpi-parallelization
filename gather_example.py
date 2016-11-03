@@ -21,9 +21,8 @@ positions_per_core = {i: i for i in range(len(data))}
 data[positions_per_core[rank]] += 1
 
 # Allgather all the data
-all_data = comm.allgather(data)
+data = comm.gather(data[positions_per_core[rank]])
 
-# Create a single updated piece of data based on the updates that each core performed
-data = [all_data[i][positions_per_core[i]] for i in range(size)]
-
-print("Ending data for rank {}:\n{}".format(rank, data))
+print("Ending data for rank {} (this is only correct on the root):\n{}".format(rank, data))
+#if rank == root:
+#    print("Ending data, one for each core (this is only correct on the root):\n{}".format(data))

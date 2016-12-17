@@ -50,7 +50,7 @@ def split_multiple(split_into, cores_per_comm, args):
 
     if colored_rank == 0:
         print("Trying to spawn...")
-        intercomm = MPI.COMM_SELF.Spawn(sys.executable, args=['worker_split_multiple.py']+args, maxprocs=colored_size)
+        intercomm = MPI.COMM_SELF.Spawn(sys.executable, args=['split_multiple_worker.py']+args, maxprocs=colored_size)
         print("Spawn successful!")
 
         # Use a barrier to interact with parent.barrier() in worker_multiple.py for demonstration

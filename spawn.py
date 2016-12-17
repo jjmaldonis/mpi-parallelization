@@ -30,7 +30,7 @@ def main():
 
 def spawn(args, size):
     print("Trying to spawn...")
-    intercomm = MPI.COMM_SELF.Spawn(sys.executable, args=['worker_multiple.py']+args, maxprocs=size)
+    intercomm = MPI.COMM_SELF.Spawn(sys.executable, args=['spawn_multiple_worker.py']+args, maxprocs=size)
     print("Spawn successful!")
 
     # First use a barrier to interact with parent.barrier() in worker_multiple.py

@@ -43,7 +43,7 @@ def main(split_into=2):
 
 def spawn_multiple(split_into, cores_per_comm, args):
     print("Trying to spawn...")
-    args = [["worker_multiple.py"] + [*data] for data in args]
+    args = [["spawn_multiple_worker.py"] + [*data] for data in args]
     intercomm = MPI.COMM_SELF.Spawn_multiple([sys.executable]*split_into, args=args, maxprocs=[cores_per_comm]*split_into)
     print("Spawn successful!")
 

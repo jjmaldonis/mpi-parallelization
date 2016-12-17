@@ -42,7 +42,7 @@ def main(split_into=2):
 def spawn_fortran_multiple(world_size, split_into, cores_per_comm, args):
     print("Trying to spawn...")
     args = [[*data] for data in args]
-    intercomm = MPI.COMM_SELF.Spawn_multiple(['fortran_worker_multiple']*split_into, args=args, maxprocs=[cores_per_comm]*split_into)
+    intercomm = MPI.COMM_SELF.Spawn_multiple(['spawn_multiple_worker_fortran']*split_into, args=args, maxprocs=[cores_per_comm]*split_into)
     print("Spawn successful!")
 
     # Use a barrier to interact with parent.barrier() in worker_multiple.py for demonstration

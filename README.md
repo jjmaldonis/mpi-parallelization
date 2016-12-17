@@ -1,4 +1,4 @@
-This repository contains MPI examples for [mpi4py](https://bitbucket.org/mpi4py/mpi4py).
+This repository contains MPI examples using [mpi4py](https://bitbucket.org/mpi4py/mpi4py).
 
 ### Examples
 

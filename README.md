@@ -22,9 +22,16 @@ This repository contains MPI examples for [mpi4py](https://bitbucket.org/mpi4py/
 
 * `split_multiple_loop.py` splits and spawns multiple executables within a loop.
 
-### Dependencies
-
+### Notes
 This code has only been tested with Open MPI 1.10.2 and mpi4py 2.0.0.
 
 Open MPI sets the environment variable `OMPI_MCA_orte_app_num`, which is crucial for the `spawn_multiple` commands. This necessity can be avoided in other MPI implementations by passing the color in to the worker program. This is illustrated in the examples.
+
+#### Spawn Multiple vs. Split-Spawn
+
+The processes of spawning multiple individuals using `Spawn_multiple` vs. `Split` -> `Spawn` both take about the same amount of time (within the margin of error for the simple tests I ran).
+
+The Spawn Multiple programs can take advantage of the OpenMPI environment variable `OMPI_MCA_orte_app_num` directly, while the splitting examples inherently cannot. The Spawn Multiple examples can therefore be made to run naturally using MPMD with OpenMPI.
+
+If more MPI APIs were to specify an argument analogous to `OMPI_MCA_orte_app_num`, the `MPI_COMM_Spawn_multiple` function would become signficantly more useful.
 

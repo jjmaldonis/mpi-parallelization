@@ -10,6 +10,7 @@ Run with:
 from mpi4py import MPI
 import numpy
 import sys
+import os
 import time
 
 from check_mpi import check_mpi
@@ -25,10 +26,12 @@ def main(split_into=2):
     cores_per_comm = size // split_into
 
     # Create fake data for input for each of the different processes we will spawn
-    data_by_process = [str(i+1) for i in range(split_into)]
+    multipliers = [i+1 for i in range(split_into)]
+    colors = [(i+1)//split_into for i in range(split_into)]
+    data_by_process = [(str(multipliers[i]), str(colors[i])) for i in range(split_into)]
 
     if rank == 0:
-        print("We will spawn {} workers with {} cores each out of a total of {} cores.".format(split_into, cores_per_comm, size))
+        print("Spawning {} workers with {} cores each out of a total of {} cores.".format(split_into, cores_per_comm, size))
         print("Those {} split communicators will get the following as input:".format(split_into))
         for i in range(split_into):
             print("    Communicator {}: {}".format(i, data_by_process[i]))
@@ -37,7 +40,7 @@ def main(split_into=2):
 
 def spawn_multiple(split_into, cores_per_comm, args):
     print("Trying to spawn...")
-    args = [["worker_multiple.py", data] for data in args]
+    args = [["worker_multiple.py"] + [*data] for data in args]
     intercomm = MPI.COMM_SELF.Spawn_multiple([sys.executable]*split_into, args=args, maxprocs=[cores_per_comm]*split_into)
     print("Spawn successful!")
 

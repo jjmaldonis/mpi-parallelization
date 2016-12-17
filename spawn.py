@@ -20,7 +20,9 @@ def main():
     rank = world.Get_rank()
     size = world.Get_size()
 
-    args = ['1']
+    multiplier = 1
+    color = 0
+    args = [str(multiplier), str(color)]
 
     if rank == 0:
         spawn(args, size)

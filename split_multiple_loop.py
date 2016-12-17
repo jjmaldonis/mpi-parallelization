@@ -1,8 +1,8 @@
 """
-Calls the spawn_multiple command in spawn_multiple.py in a loop.
+Calls the split_multiple command in split_multiple.py in a loop.
 
 Run with:
-    mpiexec -np 4  -oversubscribe  -mca btl tcp,sm,self  python spawn_multiple_loop.py
+    mpiexec -np 4  -oversubscribe  -mca btl tcp,sm,self  python split_multiple_loop.py
 """
 
 from mpi4py import MPI
@@ -10,7 +10,7 @@ import numpy
 import sys
 import time
 
-from spawn_multiple import spawn_multiple
+from split_multiple import split_multiple
 from check_mpi import check_mpi
 
 
@@ -26,7 +26,7 @@ def main(split_into=2, nloops=3):
     # Create fake data for input for each of the different processes we will spawn
     multipliers = [i+1 for i in range(split_into)]
     colors = [(i+1)//split_into for i in range(split_into)]
-    data_by_process = [(str(multipliers[i]), str(colors[i])) for i in range(split_into)]
+    data_by_process = [[str(multipliers[i]), str(colors[i])] for i in range(split_into)]
 
 
     if rank == 0:
@@ -35,9 +35,10 @@ def main(split_into=2, nloops=3):
         for i in range(split_into):
             print("    Communicator {}: {}".format(i, data_by_process[i]))
 
-        for i in range(nloops):
+    for i in range(nloops):
+        if rank == 0:
             print("Iteration {}...".format(i))
-            spawn_multiple(split_into, cores_per_comm, data_by_process)
+        split_multiple(split_into, cores_per_comm, data_by_process)
 
 if __name__ == "__main__":
     import argparse

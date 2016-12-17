@@ -8,12 +8,14 @@ import numpy
 import sys, os
 
 
-def split_and_calculate_pi(multiplier):
+def split_and_calculate_pi(multiplier, color=None):
     parent = MPI.Comm.Get_parent()
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
     rank = comm.Get_rank()
-    color = int(os.environ['OMPI_MCA_orte_app_num'])
+
+    if color is None:
+        color = int(os.environ['OMPI_MCA_orte_app_num'])  # An OMPI environment variable specifies the color when using MPMD
 
     # Split the communicator.
     colored_comm = comm.Split(color)
@@ -65,5 +67,9 @@ result by worker {} on color {}.".format(100.0*leftover_fraction, colored_rank, 
 
 if __name__ == '__main__':
     multiplier = float(sys.argv[1])
-    split_and_calculate_pi(multiplier)
+    try:
+        color = int(sys.argv[2])
+    except:
+        color = None
+    split_and_calculate_pi(multiplier, color)
 

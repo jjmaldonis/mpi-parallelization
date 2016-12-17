@@ -34,12 +34,6 @@ program split_worker
     double precision, dimension(:,:), allocatable :: array_results
 
  
-    ! Read in this special environemnt variable set by OpenMPI
-    ! Context:  http://stackoverflow.com/questions/35924226/openmpi-mpmd-get-communication-size
-    ! (See the solution by Hristo Iliev)
-    call get_environment_variable("OMPI_MCA_orte_app_num", color_str)
-    call str2int(color_str, color, stat)
-
     ! Initialize MPI
     call mpi_init_thread(MPI_THREAD_MULTIPLE, ipvd, mpierr)
     call mpi_comm_rank(mpi_comm_world, world_rank, mpierr)
@@ -47,6 +41,18 @@ program split_worker
 
     ! Get the parent communicator
     call mpi_comm_get_parent(parent_comm, mpierr)
+
+    ! Read in this special environemnt variable set by OpenMPI
+    ! Context:  http://stackoverflow.com/questions/35924226/openmpi-mpmd-get-communication-size
+    ! (See the solution by Hristo Iliev)
+    call get_environment_variable("OMPI_MCA_orte_app_num", color_str)
+    if(trim(color_str) .ne. "") then
+        call str2int(color_str, color, stat)
+        write(*,"(A,I2,A,I2)") "Found environment variable 'OMPI_MCA_orte_app_num' == ", color, " for rank ", world_rank
+    else
+        call get_command_argument(2, color_str, length, stat)
+        call str2int(color_str, multiplier, stat)
+    endif
 
     ! Split the world communicator into separate pieces for each subprogram
     call mpi_barrier(mpi_comm_world, mpierr)

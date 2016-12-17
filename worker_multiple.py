@@ -16,6 +16,7 @@ def split_and_calculate_pi(multiplier, color=None):
 
     if color is None:
         color = int(os.environ['OMPI_MCA_orte_app_num'])  # An OMPI environment variable specifies the color when using MPMD
+        print("Found environment variable 'OMPI_MCA_orte_app_num' == {} for rank {}.".format(color, rank))
 
     # Split the communicator.
     colored_comm = comm.Split(color)

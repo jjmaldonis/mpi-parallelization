@@ -24,7 +24,12 @@ def main(split_into=2, nloops=3):
     cores_per_comm = size // split_into
 
     # Create fake data for input for each of the different processes we will spawn
-    data_by_process = [str(i+1) for i in range(split_into)]
+    multipliers = [i+1 for i in range(split_into)]
+    if 'Open MPI' not in MPI.get_vendor():
+        colors = [(i+1)//split_into for i in range(split_into)]
+        data_by_process = [(str(multipliers[i]), str(colors[i])) for i in range(split_into)]
+    else:
+        data_by_process = [(str(multipliers[i]),) for i in range(split_into)]
 
 
     if rank == 0:

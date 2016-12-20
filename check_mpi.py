@@ -15,3 +15,5 @@ def check_mpi():
     vendor_number = ".".join([str(x) for x in MPI.get_vendor()[1]])
     if vendor_number not in mpiexec_path:
         raise ImportError("The MPI version that mpi4py was compiled against does not match the version of 'mpiexec'. mpi4py's version number is {}, and mpiexec's path is {}".format(MPI.get_vendor(), mpiexec_path))
+
+check_mpi()

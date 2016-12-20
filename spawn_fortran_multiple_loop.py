@@ -11,11 +11,9 @@ import sys
 import time
 
 from spawn_fortran_multiple import spawn_fortran_multiple
-from check_mpi import check_mpi
 
 
 def main(split_into=2, nloops=3):
-    check_mpi()
     world = MPI.COMM_WORLD
     rank = world.Get_rank()
     size = world.Get_size()

@@ -11,11 +11,8 @@ import numpy
 import sys
 import time
 
-from check_mpi import check_mpi
-
 
 def main(split_into=2):
-    check_mpi()
     world = MPI.COMM_WORLD
     rank = world.Get_rank()
     size = world.Get_size()
